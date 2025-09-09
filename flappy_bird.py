@@ -34,21 +34,32 @@ class Bird(pygame.sprite.Sprite):
         self.clicked = False
         self.velocity = 0
         print("doing creation")
+        self.counter = 0
     def update(self):
         if flying == True:
-            self.velocity += 0.7
-            if self.velocity > 10000000:
-                self.velocity = 10000000
+            self.velocity += 0.5
+            if self.velocity > 1:
+                self.velocity = 1
+        
             if self.rect.bottom < 850:
                 self.rect.y += (int(self.velocity))
         if game_over == False:
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True
-                self.velocity -=150
-            if self.velocity > 150:
-                self.velocity = 8
+                self.velocity -=10
+            if self.velocity > 5:
+                self.velocity = 5
             if pygame.mouse.get_pressed()[0] == 0:
                 self.clicked = False
+            flap_cool_down = 5
+            self.counter += 1
+            if self.counter > flap_cool_down:
+                self.counter = 0
+                self.index +=1
+                if self.index > len(self.flappy_images):
+                    self.index = 0
+                self.image = self.flappy_images[self.index]
+
         
             
 Birdgroup = pygame.sprite.Group()
