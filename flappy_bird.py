@@ -39,6 +39,15 @@ class Pipe(pygame.sprite.Sprite):
             self.rect.bottomleft = [x,y-int(pipegap/2)]
         elif position == -1:
             self.rect.topleft = [x,y+int(pipegap/2)]
+    def update(self):
+        self.rect.x -= scroll_speed
+        if self.rect.right < 0:
+            self.kill()
+        pygame.display.update()
+
+
+    
+        
             
 
 
@@ -151,7 +160,7 @@ while Running:
     #once the bird has hit the ground it's game over and no longer flying
     if flappy.rect.bottom >= 768:
         game_over = True
-        #flying = False
+        flying = False
 
     if flying == True and game_over == False:
         print(flying,game_over)
