@@ -89,11 +89,11 @@ class Bird(pygame.sprite.Sprite):
             self.image = pygame.transform.rotate(self.flappy_images[self.index],self.velocity*-2)
         else:
             self.image = pygame.transform.rotate(self.flappy_images[self.index],-90)
-class button():
+class Button():
     def __init__(self,x,y,image):
         self.image = image
-        self.Rect = self.image.get_Rect()
-        self.Rect.Top_left = (x,y)
+        self.Rect = self.image.get_rect()
+        self.Rect.topleft = (x,y)
     def Draw(self):
         action = False
         if self.Rect.collidepoint(pygame.mouse.get_pos()):
@@ -121,7 +121,7 @@ flappy = Bird(400,400)
 
 Birdgroup.add(flappy)
 Running = True
-button = button(WIDTH // 2 - 50, HEIGHT // 2 - 100, )
+button = Button(WIDTH // 2 - 50, HEIGHT // 2 - 100, button_img)
 
 while Running:
     clock.tick(Fps)
@@ -132,6 +132,7 @@ while Running:
     Birdgroup.update()
     #draw and scroll the ground
     screen.blit(ground, (ground_scroll, 768))
+    pygame.display.update()
     #check the score
     if len(Pipegroup) > 0:
         if Birdgroup.sprites()[0].rect.left > Pipegroup.sprites()[0].rect.left\
@@ -150,12 +151,15 @@ while Running:
     #once the bird has hit the ground it's game over and no longer flying
     if flappy.rect.bottom >= 768:
         game_over = True
-        flying = False
+        #flying = False
 
     if flying == True and game_over == False:
+        print(flying,game_over)
+        
         #generate new pipes
         time_now = pygame.time.get_ticks()
         if time_now - last_pipe > pipe_frequency:
+            print("yes")
             pipe_height = random.randint(-100, 100)
             btm_pipe = Pipe(WIDTH, int(HEIGHT / 2) + pipe_height, -1)
             top_pipe = Pipe(WIDTH, int(HEIGHT / 2) + pipe_height, 1)
@@ -167,7 +171,7 @@ while Running:
         if abs(ground_scroll) > 35:
             ground_scroll = 0
               #check for game over and reset
-    
+        pygame.display.update()
     if game_over == True:
         if button.Draw():
             game_over = False
@@ -175,7 +179,7 @@ while Running:
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            run = False
+            Running = False
         if event.type == pygame.MOUSEBUTTONDOWN and flying == False and game_over == False:
             flying = True
     pygame.display.update()
