@@ -13,7 +13,7 @@ pass_pipe = False
 clock = pygame.time.Clock()
 Fps = 60
 ground_scroll = -100
-scroll_speed = 0.25
+scroll_speed = 5
 flying = False
 game_over = False
 pipegap = 150
@@ -69,13 +69,13 @@ class Bird(pygame.sprite.Sprite):
         print("doing creation")
         self.counter = 0
     def update(self):
-        if flying == True:
-            self.velocity += 0.5
-            if self.velocity > 1:
-                self.velocity = 1
+      
+        self.velocity += 1
+        if self.velocity > 3:
+            self.velocity = 3
         
-            if self.rect.bottom < 850:
-                self.rect.y += (int(self.velocity))
+        if self.rect.bottom < 850:
+            self.rect.y += (int(self.velocity))
         if game_over == False:
             if pygame.mouse.get_pressed()[0] == 1 and self.clicked == False:
                 self.clicked = True
@@ -189,7 +189,15 @@ while Running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             Running = False
-        if event.type == pygame.MOUSEBUTTONDOWN and flying == False and game_over == False:
-            flying = True
+        if event.type == pygame.MOUSEBUTTONDOWN:
+            if flying == False and game_over == False:
+                flying = True
+            elif game_over:
+                if button.Rect.collidepoint(event.pos):
+                    game_over == False
+                    score = reset_game
+                
+        
+        
     pygame.display.update()
 pygame.quit()
